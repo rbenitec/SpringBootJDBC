@@ -24,6 +24,7 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 	private JdbcTemplate jdbcTemplate;
 	
 	
+	//Metodo para listar productos
 	@Override
 	public List<Producto> listar() throws Exception {
 		
@@ -64,7 +65,9 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 		log.info("Productos: " + productos);
 		return productos;
 	}
-
+	
+	//Metodo para Registrar un Producto
+	
 	@Override
 	public void registrar(Producto producto) throws Exception {
 		
@@ -81,6 +84,8 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 								   producto.getImagen_tipo(),
 								   producto.getImagen_tamanio());
 	}
+	
+	//Metodo para Modificar el nombre de un producto.
 
 	@Override
 	public void modificar(Long id, String nombreProducto) throws Exception {
@@ -92,6 +97,7 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 		
 	}
 
+	//Metodo para Eliminar un producto
 	@Override
 	public void eliminar(Long id) throws Exception {
 		
@@ -103,6 +109,8 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 		
 	}
 
+	//Encontrar un producto por nombre.
+	
 	@Override
 	public List<Producto> findByName(String nombre) throws Exception {
 		log.info("Call findByNombre: (Nombre: "+nombre+")");

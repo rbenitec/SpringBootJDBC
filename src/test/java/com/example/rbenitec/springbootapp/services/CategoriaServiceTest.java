@@ -30,7 +30,7 @@ public class CategoriaServiceTest {
 	}
 	
 
-	
+	//Metodo test del listado de categoria
 	@Test
 	void testRunner() throws Exception{
 		List<Categoria> lis = categoriaService.listar();
@@ -43,4 +43,5 @@ public class CategoriaServiceTest {
 		lis.stream().forEach(item -> log.info(item.toString()));
 		
 	}
+	
 }

@@ -21,6 +21,8 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	//Metodo para listar Producto
+	
 	@Override
 	public List<Categoria> listar() throws Exception {
 		log.info("Call listar()");
