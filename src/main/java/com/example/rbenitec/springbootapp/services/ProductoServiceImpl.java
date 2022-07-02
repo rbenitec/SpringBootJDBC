@@ -45,4 +45,15 @@ public class ProductoServiceImpl implements ProductoService {
 		
 	}
 
+	@Override
+	public List<Producto> findByName(String nombre) throws Exception {
+		log.info("Call findByName: "+nombre+")");
+		return productoRepository.findByName(nombre);
+	}
+
+	@Override
+	public Producto findById(Long id) throws Exception {
+		return productoRepository.findById(id);
+	}
+
 }

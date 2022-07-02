@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 import java.util.List;
 
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +75,42 @@ public class ProductoServiceTest {
 		int totalDespues = productos.size();
 		assertThat(totalAntes - totalDespues, is(1));
 			
+	}
+	
+	@Test
+	public void testBuscarPorNombre() throws Exception {
+		List<Producto> lis = productoService.findByName("AMD");
+		log.info("Print by productos");
+		
+		lis.stream().forEach(p -> log.info(p.toString()));
+		
+		assertThat(lis.isEmpty(), is(false));
+		
+	}
+	
+	@Test
+	public void testActualizar() throws Exception{
+		//Actualizar el nombre del producto
+		Long id = 26L;
+		String newName= "Sonix";
+		productoService.actualizar(id, newName);
+		//Buscar el producto
+		
+		List<Producto> changeProduct = productoService.findByName(newName);
+		
+		//Verificar que el nombre ha sido cambiado
+		
+		assertThat(changeProduct.isEmpty(), is(false));
+		
+	}
+	
+	@Test
+	public void findById() throws Exception{
+		//Encontrar el producto por Id
+		Long id = 26L;
+		Producto p = productoService.findById(id);
+		//Validar que haya encontrado el producto
+		assertThat(p.getId()!=id, is(false));
 	}
 	
 }

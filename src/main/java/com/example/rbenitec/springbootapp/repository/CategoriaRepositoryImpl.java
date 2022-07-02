@@ -25,7 +25,7 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 	
 	@Override
 	public List<Categoria> listar() throws Exception {
-		log.info("Call listar()");
+		log.info("Call listar Categorias()");
 		
 		String sql="select * from categorias";
 		

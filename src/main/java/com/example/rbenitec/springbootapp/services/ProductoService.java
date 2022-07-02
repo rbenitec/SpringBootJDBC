@@ -13,4 +13,8 @@ public interface ProductoService {
 	public void actualizar(Long id, String nombreProducto) throws Exception;
 	
 	public void eliminar(Long id) throws Exception;
+	
+	public List<Producto> findByName(String nombre) throws Exception;
+	
+	public Producto findById(Long id) throws Exception;
 }

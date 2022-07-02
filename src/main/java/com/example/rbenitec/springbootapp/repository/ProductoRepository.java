@@ -20,4 +20,7 @@ public interface ProductoRepository {
 	//Buscar por nombre
 	public List<Producto> findByName(String nombre) throws Exception;
 	
+	//Buscar por ID
+	public Producto findById(Long id) throws Exception;
+	
 }

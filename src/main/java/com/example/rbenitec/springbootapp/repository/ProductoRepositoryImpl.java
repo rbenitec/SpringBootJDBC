@@ -7,8 +7,12 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +20,7 @@ import com.example.rbenitec.springbootapp.entities.Categoria;
 import com.example.rbenitec.springbootapp.entities.Producto;
 
 @Repository
-public class ProductoRepositoryImpl implements ProductoRepository{
+public class ProductoRepositoryImpl implements ProductoRepository, RowMapper<Producto>{
 
 	private static Logger log = LoggerFactory.getLogger(ProductoRepositoryImpl.class);
 	
@@ -103,8 +107,7 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 		
 		log.info("Call Eliminar: (El id: "+id+")");
 		
-		String query="SELECT p.id, p.categorias_id, c.nombre AS categorias_nombre, p.nombre, p.descripcion, p.precio, p.stock, p.imagen_nombre, p.imagen_tipo, p.imagen_tamanio, p.creado, p.estado FROM productos p INNER JOIN categorias c ON c.id=p.categorias_id WHERE estado=1 and p.nombre=? ORDER BY id";
-		
+		String query="DELETE FROM productos WHERE id=?";
 		jdbcTemplate.update(query, id);
 		
 	}
@@ -114,8 +117,9 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 	@Override
 	public List<Producto> findByName(String nombre) throws Exception {
 		log.info("Call findByNombre: (Nombre: "+nombre+")");
-		String query = "select * from productos where nombre=?";
-		
+		String query = "SELECT p.id, p.categorias_id, c.nombre AS categorias_nombre, p.nombre, p.descripcion, p.precio, p.stock, p.imagen_nombre, p.imagen_tipo, p.imagen_tamanio, p.creado, p.estado FROM productos p INNER JOIN categorias c ON c.id=p.categorias_id WHERE p.nombre=? ORDER BY id";
+			
+		//Ya que en mi query tengo un ?, necesito darle valor, y ala vez ejecutar un query(), y recibir una lista, utilizo este metodo.
 		List<Producto> listFind = jdbcTemplate.query(query, new Object[] {nombre}, new RowMapper<Producto>() {
 
 			@Override
@@ -150,6 +154,24 @@ public class ProductoRepositoryImpl implements ProductoRepository{
 			
 		});
 		
+		log.info("Lista de productos "+ nombre +": "+ listFind);
+		return listFind;
+	}
+
+	@Override
+	public Producto findById(Long id) throws SQLException {
+		log.info("Call findById:("+id+")");
+		String query = "SELECT p.id, p.categorias_id, c.nombre AS categorias_nombre, p.nombre, p.descripcion, p.precio, p.stock, p.imagen_nombre, p.imagen_tipo, p.imagen_tamanio, p.creado, p.estado FROM productos p INNER JOIN categorias c ON c.id=p.categorias_id WHERE p.id=?";
+//		Producto p = jdbcTemplate.query(query, new ProductoRepositoryImpl(),id).stream().findFirst().get();
+		
+		Producto p = jdbcTemplate.queryForObject(query, BeanPropertyRowMapper.newInstance(Producto.class),id);
+		log.info("Se encontro el producto: "+ p);
+		return p;
+	}
+
+	@Override
+	public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
